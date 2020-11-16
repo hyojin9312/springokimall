@@ -46,7 +46,8 @@ $(document).ready(function(){
         $.ajax({
             url: '/member/checkAutocode',
             type: 'post',
-            dataType: {code:code},
+            dataType: 'text',
+            data: {code:code},
             success: function(data){
                 if(data=='SUCCESS'){
                     $("#email_authcode").hide();
@@ -83,11 +84,25 @@ $(document).ready(function(){
         var mb_age = $("input[name='mb_age']:checked").val();
 
         //현재 비밀번호 확인검사
-        var mb_pw_val = mb_pw.val();
+        /*var mb_pw_val = mb_pw.val();
 
         $.ajax({
-        
-        });
+            url: '/member/checkPwAjax',
+            type: 'post',
+            dataType: 'text',
+            data: {mb_pw : mb_pw_val},
+            success: function(data){
+                if(data=='SUCCESS'){
+                    form.submit();
+                }else{
+                    alert("비밀번호가 다릅니다.");
+                    mb_pw.val("");
+                    mb_pw.focus();
+                }
+            }
+        });*/
+
+        form.submit();
     });
 
     //취소 버튼 클릭시

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.okimall.mappers.orderMapper">
+	
+	<!-- 주문코드 가져오기 -->
+	<select id="readOrderCode" resultType="int">
+		select seq_ord_no.nextval from dual
+	</select>
+	
+	<!-- 주문내역 추가 -->
+	<insert id="addOrderDetail" parameterType="OrderDetailVO">
+		insert into orderde_tb(ord_no, gds_no, ord_coun, ord_price, ord_disc)
+		values(#{ord_no}, #{gds_no}, #{ord_coun}, #{ord_price}, #{ord_disc}) 
+	</insert>
+	
+	<!-- 주문정보 추가 -->
+	<insert id="addOrder" parameterType="OrderVO">
+		insert into order_tb(ord_no, mb_id, ord_name, ord_epost, ord_addr, ord_daddr, ord_phone, ord_total, ord_date)
+		values(#{ord_no}, #{mb_id}, #{ord_name}, #{ord_epost}, #{ord_addr}, #{ord_daddr}, #{ord_phone}, #{ord_total}, sysdate)
+	</insert>
+	
+	<!-- 주문목록 -->
+	<select id="orderList" parameterType="string" resultType="OrderListVO">
+		select g.gds_imag, g.gds_name, d.ord_no, d.gds_no, d.ord_coun, d.ord_price,d.ord_disc, o.ord_date
+		from orderde_tb d inner join order_tb o
+		on d.ord_no = o.ord_no
+		inner join goods_tb g
+		on d.gds_no = g.gds_no
+		where o.mb_id = #{mb_id}
+		order by d.ord_no desc, d.gds_no desc
+	</select>
+	
+	<!-- 주문상세정보 -->
+	<select id="readOrder" parameterType="int" resultType="OrderReadDetailVO">
+		select d.ord_coun, d.gds_no, d.ord_price, d.ord_disc, g.gds_name, g.gds_imag, g.gds_pric, g.gds_disc
+		from orderde_tb d
+		inner join goods_tb g
+		on d.gds_no = g.gds_no
+		where d.ord_no = #{ord_no}
+	</select>
+	
+	<!-- 주문자 정보 -->
+	<select id="getOrder" parameterType="int" resultType="OrderVO">
+		select ord_no, mb_id, ord_name, ord_epost, ord_addr, ord_daddr, ord_phone, ord_total, ord_date
+		from order_tb
+		where ord_no = #{ord_no}
+	</select>
+	
+	<!-- 관리자페이지 주문목록 -->
+	<select id="adorderlist" resultType="OrderListVO">
+		select o.ord_no, g.gds_no, o.mb_id, g.gds_name, d.ord_coun, o.ord_addr, o.ord_total, o.ord_date
+		from ORDER_TB o inner join ORDERDE_TB d
+		on o.ord_no = d.ord_no
+		inner join GOODS_TB g
+		on d.gds_no = g.gds_no
+		where o.ord_no = #{ord_no}
+		order by o.ord_date desc
+	</select>
+	
+</mapper>

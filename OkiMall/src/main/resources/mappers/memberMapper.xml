@@ -4,7 +4,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.okimall.mappers.MemberMapper">
-
+	
+	<select id="getTime" resultType="String">
+		select sysdate from dual
+	</select>
+	
+	<!-- MemberVO -->
+	<select id="readUser" parameterType="string" resultType="MemberVO">
+		select mb_id, mb_name, mb_epost, mb_addr, mb_daddr, mb_nick, mb_email,
+			   mb_phone, mb_age, mb_point, mb_joindate, mb_revdate, mb_lasttime
+		from member_tb
+		where mb_id = #{mb_id}
+	</select>
+	
 	<!-- 회원가입 -->
 	<insert id="join" parameterType="MemberVO">
 		insert into member_tb(mb_id, mb_pw, mb_name, mb_epost, mb_addr, mb_daddr, mb_nick, mb_email, mb_phone, mb_age)
@@ -26,6 +38,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where mb_id=#{mb_id}
 	</update>
 	
+	<!-- 비밀번호 변경 -->
+	<update id="changePw" parameterType="MemberDTO">
+		update member_tb
+		set mb_pw = #{mb_pw}
+		where mb_id = #{mb_id}
+	</update>
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="deleteUser" parameterType="String">
+		delete from member_tb
+		where mb_id = #{mb_id}
+	</delete>
+	
 	<!-- 로그인 -->
 	<select id="login" parameterType="MemberDTO" resultType="MemberDTO">
 		select mb_id, mb_pw, mb_name, mb_nick, mb_point, mb_lasttime
@@ -39,6 +64,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		set mb_lasttime = sysdate
 		where mb_id = #{mb_id}
 	</update>
-
+	
+	<!-- 회원 조회 -->
+	<select id="memberRead" resultType="MemberVO">
+		select mb_id, mb_nick, mb_age, mb_email, mb_point, mb_joindate, mb_lasttime
+		from member_tb
+		order by mb_joindate desc
+	</select>
 
 </mapper>

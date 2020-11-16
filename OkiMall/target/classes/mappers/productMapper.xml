@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.okimall.mappers.productMapper">
+	
+	<!-- 1차카테고리 출력 -->
+	<select id="mainCGList" resultType="com.okimall.domain.CategoryVO">
+		select cate_code, cate_par, cate_name
+		from category_tb
+		where cate_par is null
+	</select>
+	
+	<!-- 2차카테고리 출력 -->
+	<select id="subCGList" parameterType="string" resultType="com.okimall.domain.CategoryVO">
+		select cate_code, cate_par, cate_name
+		from category_tb
+		where cate_par = #{cate_par}
+	</select>
+	
+	<!-- 카테고리코드에 해당하는 카테고리명 -->
+	<select id="getCGName" parameterType="string" resultType="string">
+		select cate_name
+		from category_tb
+		where cate_code=#{cate_code}
+	</select>	
+	
+	<!-- 상품리스트 -->
+	<select id="productList" parameterType="Map" resultType="ProductVO">
+		select gds_no, cate_code, gds_name, gds_pric, gds_disc, 
+				gds_make, gds_deta, gds_imag, gds_odd, gds_buytf, gds_redate, gds_update
+		from	(select gds_no, cate_code, gds_name, gds_pric, gds_disc, 
+					gds_make, gds_deta, gds_imag, gds_odd, gds_buytf, 
+					gds_redate, gds_update, row_number() over(order by gds_no desc) p_seq
+				from goods_tb
+				where cate_par = #{cate_code})
+		 where p_seq between #{rowStart} and #{rowEnd} 
+	</select>
+	
+	<!-- 해당 카테고리의 상품개수 -->
+	<select id="productCount" parameterType="string" resultType="int">
+		select count(gds_no)
+		from goods_tb
+		where cate_code = #{cate_code}
+	</select>
+	
+	<!-- 상품 상세정보 읽기 -->
+	<select id="readProduct" parameterType="int" resultType="productVO">
+		select gds_no, cate_code, gds_name, gds_pric, gds_disc, 
+				gds_make, gds_deta, gds_imag, gds_odd, gds_buytf, 
+				gds_redate, gds_update
+		 from goods_tb
+		 where gds_no=#{gds_no}
+	</select>
+</mapper>

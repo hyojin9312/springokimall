@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.okimall.mappers.AdProductMapper">
+
+	<!-- 1차카테고리 출력 -->
+	<select id="mainCGList" resultType="CategoryVO">
+		select cate_code, cate_par, cate_name
+		from category_tb
+		where cate_par is null
+	</select>
+	
+	<!-- 1차 카테고리에 해당하는 2차카테고리 출력 -->
+	<select id="subCGList" parameterType="string" resultType="CategoryVO">
+		select cate_code, cate_par, cate_name
+		from category_tb
+		where cate_par = #{cate_code}
+	</select>
+	
+	<!-- 상품등록 -->
+	<select id="insertProduct" parameterType="ProductVO">
+		insert into goods_tb(gds_no, cate_code, cate_par, gds_name, gds_pric, gds_disc,
+			gds_make, gds_deta, gds_imag, gds_odd, gds_buytf, gds_redate)
+		values(seq_gds_no.NEXTVAL, #{cate_code}, #{cate_par}, #{gds_name}, #{gds_pric}, #{gds_disc},
+			#{gds_make}, #{gds_deta}, #{gds_imag}, #{gds_odd}, #{gds_buytf}, sysdate)
+	</select>
+	
+	<!-- 검색조건 : 공통으로 사용하는 구문 -->
+	<sql id="search">
+		<if test="searchType != null">
+			<!-- 상품명 -->
+			<if test="searchType == 'name'.toString()">
+				where gds_name like '%' || #{keyword} || '%'
+			</if>
+			<!-- 내용 -->
+			<if test="searchType == 'deta'.toString()">
+				where gds_deta like '%' || #{keyword} || '%'
+			</if>
+			<!-- 제조사 -->
+			<if test="searchType == 'make'.toString()">
+				where gds_make like '%' || #{keyword} || '%'
+			</if>
+			<!-- 상품명 + 내용 -->
+			<if test="searchType == 'name_deta'.toString()">
+				where (gds_name like '%' || #{keyword} || '%')
+				or (gds_deta like '%' || #{keyword} || '%')
+			</if>
+			<!-- 상품명 + 제조사 -->
+			<if test="searchType == 'name_deta'.toString()">
+				where (gds_name like '%' || #{keyword} || '%')
+				or (gds_make like '%' || #{keyword} || '%')
+			</if>
+			<!-- 상품명 + 내용  + 제조사 -->
+			<if test="searchType == 'name_deta'.toString()">
+				where (gds_name like '%' || #{keyword} || '%')
+				or (gds_deta like '%' || #{keyword} || '%')
+				or (gds_make like '%' || #{keyword} || '%')
+			</if>
+		</if>
+	</sql>
+	
+	<!-- 상품리스트 -->
+	<select id="searchListProduct" parameterType="SearchCriteria" resultType="ProductVO">
+		select gds_no, cate_code, gds_name, gds_pric, gds_disc, gds_make, gds_deta, gds_imag,
+			 gds_odd, gds_buytf, gds_redate, gds_update
+		from (select gds_no, cate_code, gds_name, gds_pric, gds_disc, gds_make, gds_deta, gds_imag,
+			 gds_odd, gds_buytf, gds_redate, gds_update, row_number() over (order by gds_no desc)
+			 g_seq from goods_tb <include refid="search" />)
+		where g_seq between #{rowStart} and #{rowEnd}
+	</select>
+	
+	<!-- 상품개수 -->
+	<select id="searchListCount" parameterType="SearchCriteria" resultType="int">
+		<![CDATA[
+			select count(gds_no)
+			from goods_tb
+		]]>
+		<include refid="search" />
+	</select>
+	
+	<!-- 상품 정보 읽기 -->
+	<select id="readProduct" parameterType="int" resultType="ProductVO">
+		select g.gds_no, g.cate_code, c.cate_par, g.gds_name, g.gds_pric, g.gds_disc, g.gds_make,
+			 g.gds_make, g.gds_deta, g.gds_imag, g.gds_odd, g.gds_buytf, g.gds_redate, g.gds_update
+		from goods_tb g inner join category_tb c 
+		on g.cate_code = c.cate_code
+		where g.gds_no = #{gds_no}
+	</select>
+	
+	<!-- 상품수정 -->
+	<update id="editProduct" parameterType="ProductVO">
+		update goods_tb
+		set cate_code = #{cate_code}, gds_name = #{gds_name}, gds_pric = #{gds_pric}, gds_disc = #{gds_disc},
+			gds_make = #{gds_make}, gds_deta = #{gds_deta}, gds_imag = #{gds_imag}, gds_odd = #{gds_odd},
+			gds_buytf = #{gds_buytf}, gds_update = sysdate 
+		where gds_no = #{gds_no}
+	</update>
+	
+	<!-- 상품 삭제 -->
+	<delete id="deleteProduct" parameterType="int">
+		delete goods_tb
+		where gds_no = #{gds_no}
+	</delete>
+	
+	<!-- 선택한 상품 수정 -->
+	<update id="editChecked" parameterType="Map">
+		update goods_tb
+		set gds_odd = #{gds_odd}, gds_buytf = #{gds_buytf}, gds_update = sysdate
+		where gds_no = #{gds_no}
+	</update>
+
+</mapper>
