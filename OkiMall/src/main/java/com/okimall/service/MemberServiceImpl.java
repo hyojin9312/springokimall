@@ -1,5 +1,7 @@
 package com.okimall.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,13 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	private BCryptPasswordEncoder passEncrypt;
+	
+	// MemberVO 가져오기
+	@Override
+	public MemberVO readUser(String mb_id) throws Exception {
+		
+		return dao.readUser(mb_id);
+	}
 	
 	// 회원가입
 	@Override
@@ -38,7 +47,23 @@ public class MemberServiceImpl implements MemberService {
 		
 		dao.modifyUser(vo);
 	}
+
+	//비밀번호 변경
+	@Override
+	public void changePw(MemberDTO dto) throws Exception {
+		
+		dao.changePw(dto);
+		
+	}
 	
+
+	// 회원탈퇴
+	@Override
+	public void deleteUser(String mb_id) throws Exception {
+		
+		dao.deleteUser(mb_id);
+		
+	}
 	
 	// 로그인
 	@Transactional
@@ -60,6 +85,13 @@ public class MemberServiceImpl implements MemberService {
 		return memDTO;
 	}
 
+	// 회원조회
+	@Override
+	public List<MemberVO> memberRead(MemberVO vo) throws Exception {
+		
+		return dao.memberRead(vo);
+	}
 	
+
 
 }

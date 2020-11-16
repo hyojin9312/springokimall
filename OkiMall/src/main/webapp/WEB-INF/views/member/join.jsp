@@ -15,7 +15,7 @@
   <%@include file="/WEB-INF/views/include/bootjs.jsp" %>
   
    <!-- 회원가입 유효성 검사 -->
-  <script type="text/javascript" src="/js/join.js"></script>
+  <script type="text/javascript" src="/js/member/join.js"></script>
 
   <!-- Bootstrap core CSS -->
   <!-- Custom styles for this template -->
@@ -45,7 +45,7 @@
       <!-- 회원가입  -->
 		<div class="col-10"> 
     	<h2 class="my-4">회원가입</h2>
-    	<form id="frmJoin" action="joinOk" method="post">
+    	<form id="frmJoin" action="join" method="post">
         <table class="table table-boardered">
             <tr>
                 <th>아이디</th>
@@ -129,7 +129,7 @@
 		</div>
 		<!-- 우편번호API 동작코드 -->
 		<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-		<script src="/js/post.js"></script>
+		<script src="/js/member/post.js"></script>
         </div>
  		</div>
     	<!-- /.row -->

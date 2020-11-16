@@ -42,7 +42,7 @@ public class MemberController {
 	}
 	
 	// 회원가입전송
-	@RequestMapping(value = "joinOk", method = RequestMethod.POST)
+	@RequestMapping(value = "join", method = RequestMethod.POST)
 	public String memberAddOk(MemberVO vo, RedirectAttributes redirect) throws Exception{
 		
 		logger.info("입력데이터:" + vo.toString());
@@ -52,6 +52,7 @@ public class MemberController {
 		vo.setMb_pw(passEncrypt.encode(vo.getMb_pw()));
 		
 		service.join(vo);
+		redirect.addFlashAttribute("msg", "JOIN_SUCCESS");
 		
 		return "redirect:/";
 	}
@@ -109,22 +110,70 @@ public class MemberController {
 		
 	}
 	
-	// 비밀번호 확인 
-	@RequestMapping(value = "checkPW", method=RequestMethod.GET)
-	public void checkPw(@ModelAttribute("url") String url) {
+	// 비밀번호 재확인 
+	@RequestMapping(value = "checkPw", method=RequestMethod.GET)
+	public void checkPwGet(@ModelAttribute("url") String url) {
 		
 	}
 	
-	// 회원정보 수정, 비밀번호 변경, 회원탈퇴
-	public String checkPwpost() {
+	// checkPw 이후
+	@RequestMapping(value = "checkPw", method = RequestMethod.POST)
+	public String checkPwPost(@RequestParam("url") String url,	
+							  @RequestParam("mb_pw") String pw, HttpSession session, Model model) throws Exception {
 		
-		return "";
+		logger.info("======checkPw() excute...");
+		logger.info("======url:" + url + ",mb_pw:" + pw);
+		
+		MemberDTO dto = (MemberDTO) session.getAttribute("user");
+		
+		if(passEncrypt.matches(pw, dto.getMb_pw())) {
+			if(url.equals("modify")) {
+				model.addAttribute("vo", service.readUser(dto.getMb_id()));
+				return "/member/modify";
+				
+			} else if(url.equals("changePw")) {
+				return "/member/changePw";
+				
+			} else if(url.equals("delete")) {
+				return "/member/delete";
+			}
+		}
+		
+		// 비밀번호가 일치하지 않거나, url이 정해진 url이 아닌경우
+		model.addAttribute("url", url);
+		model.addAttribute("msg", "CHECK_PW_FAIL");
+		return "/member/checkPw";
 	}
 	
+	
+	// 비밀번호 확인 ajax
+	@ResponseBody
+	@RequestMapping("checkPwAjax")
+	public ResponseEntity<String> checkPwAjax(@RequestParam("mb_pw") String mb_pw, HttpSession session){
+		
+		logger.info("======checkPwAjax() excute...");
+		ResponseEntity<String> entity = null;
+		
+		MemberDTO dto = (MemberDTO) session.getAttribute("user");
+		
+		logger.info("====mb_pw:" + mb_pw);
+		logger.info("====dto:" + dto.toString());
+		
+		if(passEncrypt.matches(mb_pw, dto.getMb_pw())) {
+			entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+		} else {
+			entity = new ResponseEntity<String>("FAIL", HttpStatus.OK);
+		}
+		
+		return entity;
+		
+	}
 	
 	// 회원수정post
 	@RequestMapping(value = "modify", method = RequestMethod.POST)
 	public String modifyPost(MemberVO vo, RedirectAttributes redirect, HttpSession session) throws Exception {
+		
+		logger.info("수정데이터:" + vo.toString());
 		
 		MemberDTO dto = new MemberDTO();
 		dto.setMb_id(vo.getMb_id());
@@ -142,6 +191,39 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	// 비밀번호 변경
+	@RequestMapping(value = "changePw", method = RequestMethod.POST)
+	public String changePwPost(MemberDTO dto, RedirectAttributes redirect, HttpSession session) throws Exception {
+		
+		logger.info("==== changePwPost() excute....");
+
+		// 비밀번호 암호화 후 변경
+		dto.setMb_pw(passEncrypt.encode(dto.getMb_pw()));
+		service.changePw(dto);
+		
+		// 세션 비밀번호 재설정
+		MemberDTO memDTO = (MemberDTO) session.getAttribute("user");
+		memDTO.setMb_pw(dto.getMb_pw());
+		session.setAttribute("user", memDTO);
+		
+		redirect.addFlashAttribute("msg", "CHANGE_PW_SUCCESS");
+		return "redirect:/";
+	}
+	
+	// 회원탈퇴
+	@RequestMapping(value = "delete", method = RequestMethod.POST)
+	public String deletePost(String mb_id, HttpSession session, RedirectAttributes redirect) throws Exception {
+		
+		logger.info("======deletePost() excute....");
+		
+	    service.deleteUser(mb_id);
+	    
+	    // 회원탈퇴시 세션소멸작업
+	    session.invalidate();
+	    redirect.addFlashAttribute("msg", "DELETE_USER_SUCCESS");
+		
+		return "redirect:/";
+	}
 	
 	// 로그인
 	@RequestMapping(value = "login", method = RequestMethod.GET)

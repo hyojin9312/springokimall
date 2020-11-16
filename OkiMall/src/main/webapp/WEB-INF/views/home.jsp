@@ -23,8 +23,17 @@
   	} else if("${msg}" == "LOGOUT_SUCCESS"){
   		alert("로그아웃 되었습니다.");
   		
+  	} else if("$({msg})" == "JOIN_SUCCESS"){
+  		alert("회원가입이 완료되었습니다.\n로그인해주세요.");
+  		
   	} else if("${msg}" == "MODIFY_USER_SUCCESS"){
   		alert("회원 정보가 수정되었습니다.");
+  		
+  	} else if("${msg}" == "CHANGE_PW_SUCCESS"){
+  		alert("비밀번호가 변경되었습니다.");
+  		
+  	} else if("${msg}" == "DELETE_USER_SUCCESS"){
+  		alert("회원 탈퇴되었습니다.")
   	}
   </script>	
 	

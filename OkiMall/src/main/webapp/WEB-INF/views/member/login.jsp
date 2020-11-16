@@ -14,7 +14,7 @@
   <!-- Bootstrap core JavaScript -->
   <%@include file="/WEB-INF/views/include/bootjs.jsp" %>
    
-  <script type="text/javascript" src="/js/login.js"></script> 
+  <script type="text/javascript" src="/js/member/login.js"></script> 
   <script>
   	if("${msg}"=="LOGIN_FAIL"){
   		alert("로그인에 실패하였습니다.\n아이디와 비밀번호 다시 확인해주세요.");

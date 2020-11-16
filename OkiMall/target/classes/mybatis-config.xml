@@ -7,6 +7,7 @@
 	<typeAliases>
 		<package name="com.okimall.domain"/>
 		<package name="com.okimall.dto"/>
+		<package name="com.okimall.util"/>
 	</typeAliases>
 	
 </configuration>

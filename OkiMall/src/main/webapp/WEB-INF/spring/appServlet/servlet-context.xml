@@ -18,10 +18,11 @@
 	<resources mapping="/bower_components/**" location="/resources/bower_components/" />
 	<resources mapping="/dist/**" location="/resources/dist/" />
 	<resources mapping="/plugins/**" location="/resources/plugins/" />
+	<resources mapping="/ckeditor/**" location="/resources/bower_components/ckeditor/" />
+	<resources mapping="/upload/**" location="/resources/upload/" />
 
 	<resources mapping="/css/**" location="/WEB-INF/views/css/" />
 	<resources mapping="/vendor/**" location="/WEB-INF/views/vendor/" />
-	
 	<resources mapping="/js/**" location="/WEB-INF/views/js/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
@@ -29,6 +30,17 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
+	
+	<!-- MultipartFile -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="1048576" />
+	</beans:bean>
+	
+	<!-- 파일 업로드 -->
+	<beans:bean id="uploadPath" class="java.lang.String">
+		<beans:constructor-arg value="D:\\dev\\upload"></beans:constructor-arg>
+	</beans:bean>
+	
 	
 	<context:component-scan base-package="com.okimall.controller" />
 	

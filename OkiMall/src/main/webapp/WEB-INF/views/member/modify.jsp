@@ -15,8 +15,8 @@
   <!-- Bootstrap core JavaScript -->
   <%@include file="/WEB-INF/views/include/bootjs.jsp" %>
   
-   <!-- 회원가입 유효성 검사 -->
-  <script src="/js/join.js"></script>
+   <!-- 회원정보수정 유효성 검사 -->
+  <script src="/js/member/modify.js"></script>
 
   <!-- Bootstrap core CSS -->
   <!-- Custom styles for this template -->
@@ -33,7 +33,7 @@
   <!-- Page Content -->
   <div class="container">
 
-    <div class="row">
+    <div class="row" >
 
       <div class="col-lg-3">
 	   
@@ -44,7 +44,7 @@
       	<div class="col-lg-9">
        <div class="row">
       <!-- 회원가입  -->
-		<div class="col-10"> 
+		<div class="col-12"> 
     	<h2 class="my-4">회원정보 수정</h2>
     	<p>수정하고자하는 정보를 수정해주세요</p>
     	<form id="frmModify" action="modify" method="post">
@@ -133,7 +133,7 @@
 		</div>
 
 		<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-		<script src="/js/post.js"></script>
+		<script src="/js/member/post.js"></script>
     	 </div>
  		</div>
     	<!-- /.row -->

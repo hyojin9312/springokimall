@@ -14,12 +14,23 @@
   <!-- Bootstrap core JavaScript -->
   <%@include file="/WEB-INF/views/include/bootjs.jsp" %>
    
-  <script type="text/javascript" src="/js/login.js"></script> 
+  <script>
+  $(document).ready(function(){
+	 $("#btn_submit").on("click",function(){
+		if($("#mb_pw").val()== null || $("#mb_pw").val()==""){
+			alert("비밀번호를 입력해주세요");
+		} else {
+			$("#checkPwForm").submit();
+		}
+	 }); 
+  });
+  </script> 
   
   <!-- Bootstrap core CSS -->
   <!-- Custom styles for this template -->
   <%@include file="/WEB-INF/views/include/bootcss.jsp" %>
   
+
   <style>
  
     .card {
@@ -64,13 +75,11 @@
         <!-- 비밀번호  -->
 		<div class="card align-middle" style="width:30rem; border-radius:20px;">
 		<div class="card-title" style="margin-top:30px;">
-			<h2 class="card-title text-center" style="color:#113366;">LOGIN</h2>
+			<h2 class="card-title text-center" style="color:#113366;">비밀번호 확인</h2>
 		</div>
 		<div class="card-body">
-        <form class="form-signin" id="checkPwForm" action="checkPW" method="POST">
-        <h5 class="form-signin-heading">비밀번호 확인</h5>
+        <form class="form-signin" id="checkPwForm" action="checkPw" method="POST">
         <input type="hidden" name="url" value="${url}" />
-        <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="mb_pw" name="mb_pw" class="form-control" placeholder="비밀번호를 입력해주세요" required><br>
         <button id="btn_submit" class="btn btn-lg btn-primary btn-block" type="button">확 인</button>
         </form>
