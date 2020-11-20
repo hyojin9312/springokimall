@@ -35,10 +35,10 @@ public class OrderListVO {
 	public void setMb_id(String mb_id) {
 		this.mb_id = mb_id;
 	}
-	public String ord_addr() {
-		return mb_id;
+	public String getord_addr() {
+		return ord_addr;
 	}
-	public void ord_addr(String ord_addr) {
+	public void setord_addr(String ord_addr) {
 		this.ord_addr = ord_addr;
 	}
 	public int getOrd_no() {

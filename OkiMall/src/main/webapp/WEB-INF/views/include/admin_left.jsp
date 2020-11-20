@@ -74,7 +74,7 @@
 							<a href="/admin/list">회원목록</a>
 						</li>
 						<li>
-							<a href="#">Link in level 2</a>
+							<a href="#">후기목록</a>
 						</li>
 					</ul>
 				</li>

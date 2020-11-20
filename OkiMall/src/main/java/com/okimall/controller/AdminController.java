@@ -82,9 +82,10 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public String list(@ModelAttribute("cri") Criteria cri, MemberVO vo, Model model) throws Exception{
+	public String list(MemberVO vo, Model model) throws Exception{
 		
 		logger.info("====== list execute....");
+		
 		
 		List<MemberVO> memberList = new ArrayList<MemberVO>();
 		memberList.addAll(memberService.memberRead(vo));
@@ -93,15 +94,17 @@ public class AdminController {
 	
 		return "/admin/admemberlist";
 	}
+	
 	@RequestMapping(value = "orderlist", method = RequestMethod.GET)
 	public String orderlist(@ModelAttribute("cri") Criteria cri, OrderListVO vo, Model model)throws Exception{
 		
 		logger.info("======admin orderlist execute.....");
 		
 		List<OrderListVO> orderList = new ArrayList<OrderListVO>();
-		orderList.addAll(orderService.adorderlist(vo));
-		model.addAttribute("orderlist", orderList);
-		logger.info("==== orderlist" + orderList);
+		orderList.addAll(orderService.adorderList(vo));
+		model.addAttribute("orderList", orderList);
+		logger.info("======orderList" + orderList);
+		
 		
 		return "/admin/orderlist";
 		

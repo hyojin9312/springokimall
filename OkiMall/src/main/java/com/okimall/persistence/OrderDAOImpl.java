@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.okimall.domain.OrderDetailVO;
-import com.okimall.domain.OrderDetailVOList;
 import com.okimall.domain.OrderListVO;
 import com.okimall.domain.OrderReadDetailVO;
 import com.okimall.domain.OrderVO;
@@ -67,9 +66,9 @@ public class OrderDAOImpl implements OrderDAO {
 	
 	// 관리자 주문목록
 	@Override
-	public List<OrderListVO> adorderlist(OrderListVO vo) throws Exception {
+	public List<OrderListVO> adorderList(OrderListVO vo) throws Exception {
 		
-		return session.selectList(NS+".adorderlist", vo);
+		return session.selectList(NS+".adorderList", vo);
 		
 	}
 	

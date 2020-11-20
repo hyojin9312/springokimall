@@ -6,14 +6,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.okimall.mappers.productMapper">
 	
 	<!-- 1차카테고리 출력 -->
-	<select id="mainCGList" resultType="com.okimall.domain.CategoryVO">
+	<select id="mainCGList" resultType="CategoryVO">
 		select cate_code, cate_par, cate_name
 		from category_tb
 		where cate_par is null
 	</select>
 	
 	<!-- 2차카테고리 출력 -->
-	<select id="subCGList" parameterType="string" resultType="com.okimall.domain.CategoryVO">
+	<select id="subCGList" parameterType="string" resultType="CategoryVO">
 		select cate_code, cate_par, cate_name
 		from category_tb
 		where cate_par = #{cate_par}

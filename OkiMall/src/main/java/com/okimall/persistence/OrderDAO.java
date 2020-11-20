@@ -3,7 +3,6 @@ package com.okimall.persistence;
 import java.util.List;
 
 import com.okimall.domain.OrderDetailVO;
-import com.okimall.domain.OrderDetailVOList;
 import com.okimall.domain.OrderListVO;
 import com.okimall.domain.OrderReadDetailVO;
 import com.okimall.domain.OrderVO;
@@ -29,5 +28,5 @@ public interface OrderDAO {
 	public OrderVO getOrder(int ord_no) throws Exception;
 	
 	// 관리자 주문목록
-	public List<OrderListVO> adorderlist(OrderListVO vo) throws Exception;
+	public List<OrderListVO> adorderList(OrderListVO vo) throws Exception;
 }

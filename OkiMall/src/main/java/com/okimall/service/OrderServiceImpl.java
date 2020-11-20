@@ -101,9 +101,9 @@ public class OrderServiceImpl implements OrderService {
 	
 	// 관리자주문목록
 	@Override
-	public List<OrderListVO> adorderlist(OrderListVO vo) throws Exception {
+	public List<OrderListVO> adorderList(OrderListVO vo) throws Exception {
 		
-		return dao.adorderlist(vo);
+		return dao.adorderList(vo);
 	
 	}
 	

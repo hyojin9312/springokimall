@@ -66,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<!-- 회원 조회 -->
-	<select id="memberRead" resultType="MemberVO">
+	<select id="memberRead" parameterType="Criteria" resultType="MemberVO">
 		select mb_id, mb_nick, mb_age, mb_email, mb_point, mb_joindate, mb_lasttime
 		from member_tb
 		order by mb_joindate desc

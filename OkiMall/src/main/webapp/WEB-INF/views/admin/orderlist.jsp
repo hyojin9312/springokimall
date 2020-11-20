@@ -80,13 +80,13 @@
 										<tr>
 											<td class="col-md-1">${status.count}</td>
 											<td class="col-md-1">${OrderListVO.ord_no}</td>
-											<td class="col-md-2">${OrderListVO.gds_no}</td>
+											<td class="col-md-1">${OrderListVO.gds_no}</td>
 											<td class="col-md-1">${OrderListVO.gds_name}</td>
 											<td class="col-md-1">${OrderListVO.ord_coun}</td>
-											<td class="col-md-2">${OrderListVO.mb_id}</td>
-											<td class="col-md-1">${OrderListVO.ord_addr}</td>
+											<td class="col-md-1">${OrderListVO.mb_id}</td>
+											<td class="col-md-2">${OrderListVO.ord_addr}</td>
 											<td class="col-md-2"><fmt:formatNumber value="${OrderListVO.ord_total}" pattern="###,###,###" /> </td>
-											<td class="col-md-3"><fmt:formatDate value="${OrderListVO.ord_date}" pattern="yyyy.MM.dd HH:mm:ss"/></td>
+											<td class="col-md-4"><fmt:formatDate value="${OrderListVO.ord_date}" pattern="yyyy.MM.dd HH:mm:ss"/></td>
 										</tr>
 
 									</c:forEach>

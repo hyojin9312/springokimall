@@ -50,13 +50,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- 관리자페이지 주문목록 -->
-	<select id="adorderlist" resultType="OrderListVO">
-		select o.ord_no, g.gds_no, o.mb_id, g.gds_name, d.ord_coun, o.ord_addr, o.ord_total, o.ord_date
-		from ORDER_TB o inner join ORDERDE_TB d
+	<select id="adorderList" resultType="OrderListVO">
+		select d.ord_no, g.gds_no, o.mb_id, g.gds_name, d.ord_coun, o.ord_addr, o.ord_total, o.ord_date
+		from ORDER_TB o 
+		inner join ORDERDE_TB d
 		on o.ord_no = d.ord_no
 		inner join GOODS_TB g
 		on d.gds_no = g.gds_no
-		where o.ord_no = #{ord_no}
 		order by o.ord_date desc
 	</select>
 	

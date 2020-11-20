@@ -25,5 +25,5 @@ public interface OrderService {
 	public OrderVO getOrder(int ord_no) throws Exception;
 	
 	// 관리자 주문목록
-	public List<OrderListVO> adorderlist(OrderListVO vo) throws Exception;
+	public List<OrderListVO> adorderList(OrderListVO vo) throws Exception;
 }
